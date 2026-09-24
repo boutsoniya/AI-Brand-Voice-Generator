@@ -2,13 +2,19 @@ from models.voice_profile import VoiceProfile
 
 def test_voice_profile_validation():
     profile = VoiceProfile(
-        personality=["friendly"],
-        tone={"formality":4,"warmth":7,"confidence":8,"playfulness":5,"technicality":3},
-        sentence_style={"average_length":"short","rhythm":"punchy","complexity":"simple","punctuation_style":"clean"},
-        preferred_vocabulary=["simple"],
-        preferred_patterns=["active voice"],
+        personality=["clear"],
+        tone={"formality": 5, "warmth": 6, "confidence": 7, "playfulness": 4, "technicality": 3},
+        sentence_style={
+            "average_length": "short",
+            "rhythm": "conversational",
+            "complexity": "simple",
+            "punctuation_style": "clean",
+        },
+        preferred_vocabulary=["clear"],
+        preferred_patterns=["benefit-led"],
         avoid=["jargon"],
         audience_relationship="friendly expert",
-        summary="Clear and friendly."
+        summary="Clear and friendly.",
     )
-    assert profile.tone.warmth == 7
+    assert profile.tone.confidence == 7
+    assert profile.tone.formality <= 10
