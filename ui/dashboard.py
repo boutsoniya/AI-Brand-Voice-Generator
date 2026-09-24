@@ -14,6 +14,7 @@ def render_dashboard():
     b.metric("Generations", generations)
     c.metric("Voice dimensions", "5")
 
+    st.caption("Learn the voice once. Generate consistently. Review before publishing.")
     st.write("")
     x, y = st.columns(2)
     with x:
