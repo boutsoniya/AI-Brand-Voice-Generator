@@ -1,4 +1,5 @@
-def build_prompt(profile, content_type, objective, audience, key_message, cta, length, creativity):
+def build_prompt(profile, content_type, objective, audience, key_message, cta, length, creativity, refinement=None):
+    refinement_block = f"\nREFINEMENT REQUEST\n{refinement}\n" if refinement else ""
     return f"""
 You are the dedicated copywriter for this brand.
 
@@ -20,12 +21,16 @@ Key message: {key_message}
 CTA: {cta}
 Length: {length}
 Creativity: {creativity}/10
-
-Write original marketing copy. Preserve the brand voice without copying
-sample text. Do not mention AI. Return only the final copy.
+{refinement_block}
+Write original marketing copy. Preserve the brand voice without copying sample text.
+Do not mention AI. Return only the final copy.
 """
 
-def generate_content(client, profile, content_type, objective, audience, key_message, cta, length, creativity):
+def generate_content(client, profile, content_type, objective, audience, key_message, cta, length, creativity, refinement=None):
     if client.demo_mode:
-        return f"Something new just landed.\n\n{key_message}. Built to make your everyday experience simpler, clearer, and more useful.\n\n{cta or 'Discover it today.'}"
-    return client.generate(build_prompt(profile, content_type, objective, audience, key_message, cta, length, creativity)).strip()
+        base = f"Something new just landed.\n\n{key_message}. Built to make your everyday experience simpler, clearer, and more useful.\n\n{cta or 'Discover it today.'}"
+        if refinement:
+            return base + f"\n\nRefined direction: {refinement}"
+        return base
+    prompt = build_prompt(profile, content_type, objective, audience, key_message, cta, length, creativity, refinement)
+    return client.generate(prompt).strip()
