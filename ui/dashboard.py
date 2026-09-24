@@ -1,5 +1,6 @@
 import streamlit as st
-from database.repository import counts, recent_generations
+from database.repository import counts, recent_generations, save_brand
+from core.voice_analyzer import demo_profile
 from ui.styles import hero
 
 def render_dashboard():
@@ -24,6 +25,23 @@ def render_dashboard():
         st.markdown('<div class="card"><div class="small-label">02 · Create</div><h3>Content Generator</h3><p class="muted">Choose a channel, objective and audience. Generate copy while keeping the learned voice in context.</p></div>', unsafe_allow_html=True)
         if st.button("Open Generator →", use_container_width=True):
             st.session_state.page = "Content Generator"
+            st.rerun()
+
+    st.write("")
+    with st.container(border=True):
+        st.markdown("**Need a quick walkthrough?**")
+        st.caption("Load a realistic demo brand in one click, then explore Voice DNA, generation and consistency checking without an API key.")
+        if st.button("Load demo brand", use_container_width=True):
+            profile = demo_profile()
+            st.session_state.brand_profile = profile
+            st.session_state.brand_name = "Northstar Coffee"
+            st.session_state.brand_id = save_brand(
+                "Northstar Coffee",
+                "A modern coffee brand focused on simple rituals and better everyday moments.",
+                profile,
+            )
+            st.session_state.page = "Brand Voice Studio"
+            st.success("Demo brand loaded.")
             st.rerun()
 
     st.write("")
