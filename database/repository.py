@@ -30,6 +30,14 @@ def save_generation(brand_id, content_type, content, score=None, audio_blob=None
         return cur.lastrowid
 
 
+def update_generation(generation_id, content, score=None):
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.execute(
+            "UPDATE generations SET content = ?, score = ? WHERE id = ?",
+            (content, score, generation_id)
+        )
+
+
 def update_generation_audio(generation_id, audio_blob):
     with sqlite3.connect(DB_PATH) as conn:
         conn.execute(
