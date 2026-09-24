@@ -1,7 +1,7 @@
 import streamlit as st
 from database.repository import counts, recent_generations, save_brand, list_brands, get_brand
 from core.voice_analyzer import demo_profile
-from ui.styles import hero
+from ui.styles import hero, section_kicker
 from models.voice_profile import VoiceProfile
 
 def render_dashboard():
@@ -15,7 +15,7 @@ def render_dashboard():
     b.metric("Generations", generations)
     c.metric("Voice dimensions", "5")
 
-    st.caption("Learn the voice once. Generate consistently. Review before publishing.")
+    st.markdown('<div class="muted" style="font-size:1.05rem;">Learn the voice once. Generate consistently. Review before publishing.</div>', unsafe_allow_html=True)
     st.write("")
     saved_brands = list_brands()
     if saved_brands:
@@ -36,6 +36,7 @@ def render_dashboard():
                     st.rerun()
 
     st.write("")
+    section_kicker("Your workspace")
     x, y = st.columns(2)
     with x:
         st.markdown('<div class="card"><div class="small-label">01 · Learn</div><h3>Brand Voice Studio</h3><p class="muted">Paste existing posts, emails or website copy and extract tone, vocabulary, sentence style and guardrails.</p></div>', unsafe_allow_html=True)
@@ -49,8 +50,9 @@ def render_dashboard():
             st.rerun()
 
     st.write("")
+    section_kicker("Quick start")
     with st.container(border=True):
-        st.markdown("**Need a quick walkthrough?**")
+        st.markdown("**New here? Start with a real brand voice.**")
         st.caption("Load a realistic demo brand in one click, then explore Voice DNA, generation and consistency checking without an API key.")
         if st.button("Load demo brand", use_container_width=True):
             profile = demo_profile()
@@ -66,6 +68,7 @@ def render_dashboard():
             st.rerun()
 
     st.write("")
+    section_kicker("Your recent work")
     st.subheader("Recent generations")
     rows = recent_generations()
     if not rows:
