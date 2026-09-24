@@ -3,7 +3,7 @@ from core.content_generator import generate_content
 from core.consistency_checker import check_consistency
 from core.tts import synthesize_speech
 from database.repository import save_generation, update_generation, update_generation_audio
-from ui.styles import hero
+from ui.styles import hero, section_kicker
 
 CONTENT_TYPES = ["Instagram Post", "LinkedIn Post", "Marketing Email", "Ad Headline", "Tagline", "Blog Intro"]
 
@@ -28,7 +28,8 @@ def render_generator(client):
         return
 
     brand = st.session_state.get("brand_name", "Active brand")
-    st.markdown("**How it works:** 1. Set the brief → 2. Generate → 3. Listen & edit → 4. Check → 5. Save")
+    section_kicker("Build your next piece")
+    st.markdown("**Brief → Generate → Listen → Refine → Save**")
     st.caption(f"Active voice · {brand}")
 
     c1, c2 = st.columns(2)
@@ -60,6 +61,7 @@ def render_generator(client):
     content = st.session_state.generated_content
     result = st.session_state.generated_result
     st.divider()
+    section_kicker("Draft workspace")
     st.subheader("Generated draft")
     st.caption("Your draft is saved automatically. Edit it, create a voice preview, or refine it below.")
 
@@ -75,6 +77,7 @@ def render_generator(client):
         if generation_id:
             update_generation(generation_id, edited, result.overall_score)
 
+    section_kicker("Hear it")
     st.markdown("**Voice preview**")
     st.caption("Generate an MP3 from the current draft. The preview is stored with this generation.")
     if st.button("🔊 Generate voice preview", use_container_width=True):
@@ -117,6 +120,7 @@ def render_generator(client):
     ]):
         col.metric(label, f"{value}%")
 
+    section_kicker("Make it yours")
     with st.expander("Refine this draft", expanded=False):
         refinement = st.text_input(
             "What should change?",
