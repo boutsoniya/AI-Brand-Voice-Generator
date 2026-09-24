@@ -51,6 +51,25 @@ def render_generator(client):
         ]):
             col.metric(label, f"{value}%")
 
+        with st.expander("Refine this draft", expanded=False):
+            refinement = st.text_input(
+                "What should change?",
+                placeholder="e.g. Make it warmer, shorten the opening, and make the CTA softer.",
+            )
+            if st.button("Regenerate with this direction", use_container_width=True):
+                if not refinement.strip():
+                    st.warning("Describe the change you want first.")
+                else:
+                    with st.spinner("Refining the draft while preserving Voice DNA..."):
+                        refined = generate_content(
+                            client, profile, content_type, objective, audience,
+                            key_message, cta, length, creativity, refinement.strip()
+                        )
+                        refined_result = check_consistency(client, profile, refined)
+                    st.session_state.generated_content = refined
+                    st.session_state.generated_result = refined_result
+                    st.rerun()
+
         left, right = st.columns(2)
         with left:
             st.markdown("#### What to improve")
