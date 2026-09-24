@@ -14,23 +14,43 @@ init_db()
 st.set_page_config(page_title=APP_NAME, page_icon="✦", layout="wide")
 inject_styles()
 
-if "page" not in st.session_state:
-    st.session_state.page = "Dashboard"
-if "brand_profile" not in st.session_state:
-    st.session_state.brand_profile = None
+for key, default in {
+    "page": "Dashboard",
+    "brand_profile": None,
+    "brand_id": None,
+    "brand_name": "Demo workspace",
+    "generated_content": None,
+    "generated_result": None,
+    "generated_type": "Instagram Post",
+    "check_result": None,
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
 
 with st.sidebar:
     st.markdown("## ✦ BrandVoice")
-    st.caption("AI brand consistency workspace")
-    pages = ["Dashboard","Brand Voice Studio","Content Generator","Consistency Checker"]
+    st.caption("A practical brand intelligence workspace")
+    st.divider()
+    pages = ["Dashboard", "Brand Voice Studio", "Content Generator", "Consistency Checker"]
     page = st.radio("Workspace", pages, index=pages.index(st.session_state.page))
     st.session_state.page = page
     st.divider()
-    st.caption("Powered by Gemini • Streamlit")
+    if st.session_state.brand_profile:
+        st.markdown("**Active voice**")
+        st.caption(st.session_state.brand_name)
+        st.success("Voice DNA ready")
+    else:
+        st.caption("No voice profile loaded")
+    st.divider()
+    st.caption("Gemini · Streamlit · Pydantic · SQLite")
 
 client = GeminiClient()
 
-if page == "Dashboard": render_dashboard()
-elif page == "Brand Voice Studio": render_brand_studio(client)
-elif page == "Content Generator": render_generator(client)
-else: render_checker(client)
+if page == "Dashboard":
+    render_dashboard()
+elif page == "Brand Voice Studio":
+    render_brand_studio(client)
+elif page == "Content Generator":
+    render_generator(client)
+else:
+    render_checker(client)
