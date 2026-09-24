@@ -40,7 +40,7 @@ def render_generator(client):
         result = st.session_state.generated_result
         st.divider()
         st.subheader("Generated draft")
-        edited = st.text_area("Edit before publishing", content, height=240, key="generated_editor")
+        edited = st.text_area("Edit before publishing", content, height=240, key=f"generated_editor_{hash(content)}")
         st.session_state.generated_content = edited
 
         cols = st.columns(5)
