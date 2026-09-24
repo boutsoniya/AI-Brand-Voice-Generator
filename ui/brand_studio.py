@@ -1,20 +1,23 @@
 import streamlit as st
 from core.voice_analyzer import analyze_voice
 from database.repository import save_brand
-from ui.styles import hero
+from ui.styles import hero, section_kicker
 
 def render_brand_studio(client):
     hero(
         "Brand Voice Studio",
         "Teach the system how your brand already writes. Use 3–5 representative samples for a more reliable profile.",
     )
+    section_kicker("Step 1 · Tell us about the brand")
     name = st.text_input("Brand name", placeholder="e.g. Acme Coffee")
     description = st.text_area("Brand context", placeholder="What does the brand do, who is it for, and what should it feel like?", height=90)
+    section_kicker("Step 2 · Show us how it writes")
     samples = st.text_area(
         "Writing samples",
         height=250,
         placeholder="Paste posts, emails, landing-page copy, taglines or campaign text. Separate different examples with a blank line.",
     )
+    st.caption("Tip: mix social posts, emails, website copy and campaign lines for a stronger signal.")
     if st.button("Analyze & build Voice DNA", type="primary", use_container_width=True):
         if len(samples.strip()) < 80:
             st.error("Add a little more sample text (at least ~80 characters) so the analysis has enough signal.")
@@ -32,6 +35,7 @@ def render_brand_studio(client):
 
 def render_profile(profile):
     st.divider()
+    section_kicker("Your brand, distilled")
     st.subheader("Voice DNA")
     st.caption("A compact representation of how this brand should sound across channels.")
     cols = st.columns(5)
