@@ -1,6 +1,7 @@
 import streamlit as st
 from core.content_generator import generate_content
 from core.consistency_checker import check_consistency
+from core.tts import synthesize_speech
 from database.repository import save_generation
 from ui.styles import hero
 from ui.accessibility import listen_to_text
@@ -49,7 +50,17 @@ def render_generator(client):
         st.session_state.generated_content = edited
 
         st.markdown("**Listen to this draft**")
-        listen_to_text(edited, key=f"draft_{abs(hash(edited))}")
+        st.caption("Generate an MP3 preview from the final draft. Playback works with the normal audio controls in your browser.")
+        if st.button("🔊 Generate voice preview", use_container_width=True):
+            try:
+                with st.spinner("Creating voice preview..."):
+                    st.session_state.voice_audio = synthesize_speech(edited)
+                st.success("Voice preview ready.")
+            except Exception as exc:
+                st.error(f"Voice preview could not be created: {exc}")
+        if st.session_state.get("voice_audio"):
+            st.audio(st.session_state.voice_audio, format="audio/mp3")
+            st.download_button("Download voice preview", data=st.session_state.voice_audio, file_name="brand_voice_preview.mp3", mime="audio/mpeg", use_container_width=True)
 
         cols = st.columns(5)
         for col, (label, value) in zip(cols, [
