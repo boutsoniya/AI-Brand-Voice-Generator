@@ -10,6 +10,12 @@ def save_brand(name, description, profile):
         )
         return cur.lastrowid
 
+def list_brands():
+    with sqlite3.connect(DB_PATH) as conn:
+        return conn.execute(
+            "SELECT id, name, description, profile_json FROM brands ORDER BY id DESC"
+        ).fetchall()
+
 def save_generation(brand_id, content_type, content, score=None):
     with sqlite3.connect(DB_PATH) as conn:
         cur = conn.execute(
