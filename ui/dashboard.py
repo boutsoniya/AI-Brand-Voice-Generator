@@ -1,7 +1,8 @@
 import streamlit as st
-from database.repository import counts, recent_generations, save_brand
+from database.repository import counts, recent_generations, save_brand, list_brands, get_brand
 from core.voice_analyzer import demo_profile
 from ui.styles import hero
+from models.voice_profile import VoiceProfile
 
 def render_dashboard():
     hero(
@@ -15,6 +16,25 @@ def render_dashboard():
     c.metric("Voice dimensions", "5")
 
     st.caption("Learn the voice once. Generate consistently. Review before publishing.")
+    st.write("")
+    saved_brands = list_brands()
+    if saved_brands:
+        with st.container(border=True):
+            st.markdown("**Saved brand voices**")
+            options = {f"{row[1]} · {row[4]}": row[0] for row in saved_brands}
+            selected = st.selectbox("Switch active Voice DNA", list(options.keys()), label_visibility="collapsed")
+            if st.button("Load selected voice", use_container_width=True):
+                brand = get_brand(options[selected])
+                if brand:
+                    st.session_state.brand_id = brand[0]
+                    st.session_state.brand_name = brand[1]
+                    st.session_state.brand_profile = VoiceProfile.model_validate(brand[3])
+                    st.session_state.generated_content = None
+                    st.session_state.generated_result = None
+                    st.session_state.voice_audio = None
+                    st.success(f"Loaded {brand[1]}.")
+                    st.rerun()
+
     st.write("")
     x, y = st.columns(2)
     with x:
