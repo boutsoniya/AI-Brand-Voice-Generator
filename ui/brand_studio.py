@@ -22,9 +22,9 @@ def render_brand_studio(client):
         with st.spinner("Extracting the brand's writing patterns..."):
             profile = analyze_voice(client, samples)
         st.session_state.brand_profile = profile
-        if name.strip():
-            st.session_state.brand_id = save_brand(name.strip(), description.strip(), profile)
-            st.session_state.brand_name = name.strip()
+        brand_name = name.strip() or "Untitled brand"
+        st.session_state.brand_id = save_brand(brand_name, description.strip(), profile)
+        st.session_state.brand_name = brand_name
         st.success("Voice DNA created. You can now generate or audit content.")
         render_profile(profile)
     elif st.session_state.get("brand_profile"):
