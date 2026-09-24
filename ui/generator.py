@@ -2,7 +2,7 @@ import streamlit as st
 from core.content_generator import generate_content
 from core.consistency_checker import check_consistency
 from core.tts import synthesize_speech
-from database.repository import save_generation, update_generation_audio
+from database.repository import save_generation, update_generation, update_generation_audio
 from ui.styles import hero
 
 CONTENT_TYPES = ["Instagram Post", "LinkedIn Post", "Marketing Email", "Ad Headline", "Tagline", "Blog Intro"]
@@ -71,6 +71,9 @@ def render_generator(client):
     )
     if edited != content:
         st.session_state.generated_content = edited
+        generation_id = st.session_state.get("generation_id")
+        if generation_id:
+            update_generation(generation_id, edited, result.overall_score)
 
     st.markdown("**Voice preview**")
     st.caption("Generate an MP3 from the current draft. The preview is stored with this generation.")
