@@ -33,6 +33,7 @@ def render_brand_studio(client):
 def render_profile(profile):
     st.divider()
     st.subheader("Voice DNA")
+    st.caption("A compact representation of how this brand should sound across channels.")
     cols = st.columns(5)
     labels = [("Formality","formality"),("Warmth","warmth"),("Confidence","confidence"),("Playfulness","playfulness"),("Technicality","technicality")]
     for col, (label, key) in zip(cols, labels):
