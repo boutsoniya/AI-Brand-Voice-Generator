@@ -10,6 +10,7 @@ from ui.dashboard import render_dashboard
 from ui.brand_studio import render_brand_studio
 from ui.generator import render_generator
 from ui.checker import render_checker
+from ui.history import render_history
 
 load_dotenv()
 init_db()
@@ -42,7 +43,7 @@ with st.sidebar:
     st.markdown("## ✦ BrandVoice")
     st.caption("A practical brand intelligence workspace")
     st.divider()
-    pages = ["Dashboard", "Brand Voice Studio", "Content Generator", "Consistency Checker"]
+    pages = ["Dashboard", "Brand Voice Studio", "Content Generator", "Consistency Checker", "History"]
     page = st.radio("Workspace", pages, index=pages.index(st.session_state.page))
     st.session_state.page = page
     st.divider()
@@ -63,5 +64,7 @@ elif page == "Brand Voice Studio":
     render_brand_studio(client)
 elif page == "Content Generator":
     render_generator(client)
-else:
+elif page == "Consistency Checker":
     render_checker(client)
+else:
+    render_history()
