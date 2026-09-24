@@ -42,6 +42,7 @@ if st.session_state.brand_profile is None:
 with st.sidebar:
     st.markdown("## ✦ BrandVoice")
     st.caption("A practical brand intelligence workspace")
+    st.markdown('<div style="font-size:.72rem;color:#8A8177;letter-spacing:.08em;text-transform:uppercase;">Create · Listen · Refine</div>', unsafe_allow_html=True)
     st.divider()
     pages = ["Dashboard", "Brand Voice Studio", "Content Generator", "Consistency Checker", "History"]
     page = st.radio("Workspace", pages, index=pages.index(st.session_state.page))
