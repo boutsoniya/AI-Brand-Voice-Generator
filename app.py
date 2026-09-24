@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from config.settings import APP_NAME
 from core.gemini_client import GeminiClient
 from database.db import init_db
+from database.repository import latest_brand
+from models.voice_profile import VoiceProfile
 from ui.styles import inject_styles
 from ui.dashboard import render_dashboard
 from ui.brand_studio import render_brand_studio
@@ -26,6 +28,15 @@ for key, default in {
 }.items():
     if key not in st.session_state:
         st.session_state[key] = default
+
+# Restore the latest saved brand after a refresh or new Streamlit session.
+if st.session_state.brand_profile is None:
+    saved_brand = latest_brand()
+    if saved_brand:
+        saved_id, saved_name, _description, saved_profile = saved_brand
+        st.session_state.brand_id = saved_id
+        st.session_state.brand_name = saved_name
+        st.session_state.brand_profile = VoiceProfile.model_validate(saved_profile)
 
 with st.sidebar:
     st.markdown("## ✦ BrandVoice")
