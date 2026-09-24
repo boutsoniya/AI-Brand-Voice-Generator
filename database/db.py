@@ -2,6 +2,7 @@ import os
 import sqlite3
 from config.settings import DB_PATH
 
+
 def init_db():
     os.makedirs(os.path.dirname(DB_PATH) or ".", exist_ok=True)
     with sqlite3.connect(DB_PATH) as conn:
@@ -18,5 +19,10 @@ def init_db():
             content_type TEXT,
             content TEXT,
             score INTEGER,
+            audio_blob BLOB,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )""")
+        # Safe migration for databases created by older versions.
+        columns = {row[1] for row in conn.execute("PRAGMA table_info(generations)").fetchall()}
+        if "audio_blob" not in columns:
+            conn.execute("ALTER TABLE generations ADD COLUMN audio_blob BLOB")
