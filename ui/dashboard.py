@@ -21,7 +21,7 @@ def render_dashboard():
     if saved_brands:
         with st.container(border=True):
             st.markdown("**Saved brand voices**")
-            options = {f"{row[1]} · {row[4]}": row[0] for row in saved_brands}
+            options = {f"{row[1]}": row[0] for row in saved_brands}
             selected = st.selectbox("Switch active Voice DNA", list(options.keys()), label_visibility="collapsed")
             if st.button("Load selected voice", use_container_width=True):
                 brand = get_brand(options[selected])
