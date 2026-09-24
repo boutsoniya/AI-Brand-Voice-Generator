@@ -1,6 +1,6 @@
 import streamlit as st
 from core.consistency_checker import check_consistency
-from ui.styles import hero
+from ui.styles import hero, section_kicker
 
 def render_checker(client):
     hero("Consistency Checker", "Review existing copy before publishing. The checker compares it against the active Voice DNA.")
@@ -9,6 +9,7 @@ def render_checker(client):
         st.info("Create a Brand Voice Profile first in Brand Voice Studio.")
         return
 
+    section_kicker("Paste what you want to review")
     content = st.text_area("Content to check", height=260, placeholder="Paste a LinkedIn post, email, ad, landing page section or other copy...")
     if st.button("Check brand consistency", type="primary", use_container_width=True):
         if not content.strip():
@@ -21,6 +22,7 @@ def render_checker(client):
     result = st.session_state.get("check_result")
     if result:
         st.divider()
+        section_kicker("Voice audit")
         st.subheader("Consistency report")
         st.metric("Overall consistency", f"{result.overall_score}%")
         cols = st.columns(4)
