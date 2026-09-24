@@ -80,6 +80,17 @@ def recent_generations(limit=6):
     return list_generations(limit)
 
 
+def get_brand(brand_id):
+    with sqlite3.connect(DB_PATH) as conn:
+        row = conn.execute(
+            "SELECT id, name, description, profile_json FROM brands WHERE id = ?",
+            (brand_id,)
+        ).fetchone()
+    if not row:
+        return None
+    return row[0], row[1], row[2], json.loads(row[3])
+
+
 def latest_brand():
     with sqlite3.connect(DB_PATH) as conn:
         row = conn.execute(
