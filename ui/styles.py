@@ -25,7 +25,10 @@ def inject_styles():
     .muted { color:#64748b; }
     .score-good { font-size:2.4rem; font-weight:750; letter-spacing:-.04em; }
     .small-label { font-size:.78rem; color:#64748b; text-transform:uppercase; letter-spacing:.08em; font-weight:700; }
-    div[data-testid="stButton"] > button { border-radius:10px; font-weight:650; }
+    div[data-testid="stButton"] > button, div[data-testid="stDownloadButton"] > button { border-radius:10px; font-weight:650; min-height:44px; }
+    input, textarea, select { font-size:16px !important; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline:3px solid #94a3b8 !important; outline-offset:2px !important; }
+    @media (max-width: 768px) { .block-container { padding:1.2rem 1rem 3rem; } .hero { padding:20px; } .hero h1 { font-size:1.8rem; } }
     </style>
     """, unsafe_allow_html=True)
 
