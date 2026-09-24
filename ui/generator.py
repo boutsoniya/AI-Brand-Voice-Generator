@@ -3,17 +3,22 @@ from core.content_generator import generate_content
 from core.consistency_checker import check_consistency
 from database.repository import save_generation
 from ui.styles import hero
+from ui.accessibility import listen_to_text
 
 CONTENT_TYPES = ["Instagram Post","LinkedIn Post","Marketing Email","Ad Headline","Tagline","Blog Intro"]
 
 def render_generator(client):
-    hero("Content Generator", "Turn a campaign brief into ready-to-edit copy without losing the brand's learned voice.")
+    hero("Content Generator", "Create, listen to, edit, and check marketing copy before publishing.")
     profile = st.session_state.get("brand_profile")
     if not profile:
-        st.info("Create a Brand Voice Profile first in Brand Voice Studio.")
+        st.info("Start in Brand Voice Studio. Analyze 3–5 writing samples to create your Voice DNA.")
+        if st.button("Go to Brand Voice Studio", type="primary"):
+            st.session_state.page = "Brand Voice Studio"
+            st.rerun()
         return
 
     brand = st.session_state.get("brand_name", "Active brand")
+    st.markdown("**How it works:** 1. Set the brief → 2. Generate → 3. Listen & edit → 4. Check → 5. Save")
     st.caption(f"Active voice · {brand}")
     c1, c2 = st.columns(2)
     with c1:
@@ -42,6 +47,9 @@ def render_generator(client):
         st.subheader("Generated draft")
         edited = st.text_area("Edit before publishing", content, height=240, key=f"generated_editor_{hash(content)}")
         st.session_state.generated_content = edited
+
+        st.markdown("**Listen to this draft**")
+        listen_to_text(edited, key=f"draft_{abs(hash(edited))}")
 
         cols = st.columns(5)
         for col, (label, value) in zip(cols, [
