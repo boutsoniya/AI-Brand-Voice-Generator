@@ -49,7 +49,7 @@ def update_generation_audio(generation_id, audio_blob):
 def get_generation(generation_id):
     with sqlite3.connect(DB_PATH) as conn:
         return conn.execute(
-            """SELECT g.id, COALESCE(b.name, 'Demo workspace'), g.content_type,
+            """SELECT g.id, g.brand_id, COALESCE(b.name, 'Demo workspace'), g.content_type,
                       g.content, g.score, g.audio_blob, g.created_at
                FROM generations g LEFT JOIN brands b ON b.id = g.brand_id
                WHERE g.id = ?""",
