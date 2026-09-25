@@ -40,9 +40,8 @@ if st.session_state.brand_profile is None:
         st.session_state.brand_profile = VoiceProfile.model_validate(saved_profile)
 
 with st.sidebar:
-    st.markdown("## ✦ BrandVoice")
-    st.caption("A practical brand intelligence workspace")
-    st.markdown('<div style="font-size:.72rem;color:#8A8177;letter-spacing:.08em;text-transform:uppercase;">Create · Listen · Refine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="brand-mark"><span class="brand-dot"></span>BrandVoice</div>', unsafe_allow_html=True)
+    st.markdown('<div style="font-size:.68rem;color:#9E9C94;letter-spacing:.13em;text-transform:uppercase;margin-top:8px;">Creative voice studio</div>', unsafe_allow_html=True)
     st.divider()
     pages = ["Dashboard", "Brand Voice Studio", "Content Generator", "Consistency Checker", "History"]
     page = st.radio("Workspace", pages, index=pages.index(st.session_state.page))
@@ -51,7 +50,7 @@ with st.sidebar:
     if st.session_state.brand_profile:
         st.markdown("**Active voice**")
         st.caption(st.session_state.brand_name)
-        st.success("Voice DNA ready")
+        st.markdown('<div style="color:#9AC28F;font-size:.78rem;font-weight:750;">● Voice DNA ready</div>', unsafe_allow_html=True)
     else:
         st.caption("No voice profile loaded")
     st.divider()
