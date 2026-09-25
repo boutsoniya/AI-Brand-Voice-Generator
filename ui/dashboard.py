@@ -1,7 +1,7 @@
 import streamlit as st
 from database.repository import counts, recent_generations, save_brand, list_brands, get_brand
 from core.voice_analyzer import demo_profile
-from ui.styles import hero, section_kicker
+from ui.styles import hero, section_kicker, workflow
 from models.voice_profile import VoiceProfile
 
 def render_dashboard():
@@ -15,8 +15,7 @@ def render_dashboard():
     b.metric("Generations", generations)
     c.metric("Voice dimensions", "5")
 
-    st.markdown('<div class="muted" style="font-size:1.05rem;">Learn the voice once. Generate consistently. Review before publishing.</div>', unsafe_allow_html=True)
-    st.write("")
+    workflow(["Learn the voice", "Create content", "Hear it", "Check & refine"])
     saved_brands = list_brands()
     if saved_brands:
         with st.container(border=True):
@@ -39,12 +38,12 @@ def render_dashboard():
     section_kicker("Your workspace")
     x, y = st.columns(2)
     with x:
-        st.markdown('<div class="card"><div class="small-label">01 · Learn</div><h3>Brand Voice Studio</h3><p class="muted">Paste existing posts, emails or website copy and extract tone, vocabulary, sentence style and guardrails.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="card"><div class="card-accent"></div><div class="small-label">01 · Learn</div><h3>Brand Voice Studio</h3><p class="muted">Paste existing posts, emails or website copy and extract tone, vocabulary, sentence style and guardrails.</p></div>', unsafe_allow_html=True)
         if st.button("Open Voice Studio →", use_container_width=True):
             st.session_state.page = "Brand Voice Studio"
             st.rerun()
     with y:
-        st.markdown('<div class="card"><div class="small-label">02 · Create</div><h3>Content Generator</h3><p class="muted">Choose a channel, objective and audience. Generate copy while keeping the learned voice in context.</p></div>', unsafe_allow_html=True)
+        st.markdown('<div class="card"><div class="card-accent moss"></div><div class="small-label">02 · Create</div><h3>Content Generator</h3><p class="muted">Choose a channel, objective and audience. Generate copy while keeping the learned voice in context.</p></div>', unsafe_allow_html=True)
         if st.button("Open Generator →", use_container_width=True):
             st.session_state.page = "Content Generator"
             st.rerun()
