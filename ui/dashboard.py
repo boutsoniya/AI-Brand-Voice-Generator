@@ -73,7 +73,7 @@ def render_dashboard():
     if not rows:
         st.caption("No generations yet. Create a voice profile to start.")
         return
-    for _, brand, kind, content, score, created in rows:
+    for _, brand_id, brand, kind, content, score, audio_blob, created in rows:
         preview = content.replace("\n", " ")[:150]
         with st.container(border=True):
             left, right = st.columns([5,1])
